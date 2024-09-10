@@ -1,0 +1,27 @@
+#app {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+}
+
+body{
+  background-color: rgb(223, 236, 242);
+}
+
+a,
+.green {
+  text-decoration: none;
+  color: black;
+  transition: 0.4s;
+  font-weight: bold;
+  padding: 3px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    color: rgb(119, 117, 132);
+  }
+}
+
+
