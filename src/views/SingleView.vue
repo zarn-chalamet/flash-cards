@@ -1,6 +1,6 @@
 <template>
-  <div v-if="flash">
-    <h2>{{ flash.title }}</h2>
+  <div v-if="flash" class="flash-m">
+    <h1>{{ flash.title }}</h1>
     <h4>{{ flash.description }}</h4>
     <div class="card-s" @click="showTerm=!showTerm">
       <div>
@@ -65,10 +65,19 @@ export default {
   .card-s{
     display: block;
     max-width: 800px;
-    background-color: grey;
+    background-color: rgb(105, 138, 248);
     padding: 70px;
+    height: 300px;
     border-radius: 30px;
     text-align: center;
     cursor: pointer;
+  }
+  .card-s h4,p{
+    color: white;
+    padding-top: 110px;
+  }
+  .flash-m{
+    margin: 20px 40px;
+    
   }
 </style>
