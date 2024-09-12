@@ -2,9 +2,9 @@
     <div class="card-single">
       <label>Card {{ index + 1 }}</label>
       <label>Term</label>
-      <input type="text" v-model="term" placeholder="Enter term" @keypress.enter.prevent="">
+      <input type="text" v-model="term" placeholder="Enter term" @blur="sendData">
       <label>Definition</label>
-      <input type="text" v-model="definition" placeholder="Enter definition" @keypress.enter.prevent="sendData">
+      <input type="text" v-model="definition" placeholder="Enter definition" @blur="sendData">
     </div>
   </template>
   
