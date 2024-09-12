@@ -1,7 +1,8 @@
 <template>
   <div class="card">
-    <h3>{{flash.title}}</h3>
-    <div class="term-b">
+    
+    <div class="card-text">
+      <h3>{{flash.title}}</h3>
       <h4>{{flash.cards.length}} terms</h4>
     </div>
   </div>
@@ -15,17 +16,16 @@ export default {
 
 <style>
     .card{
-        background-color: #f0f0f0;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 16px; 
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-        text-align: left; 
-    }
-    .term-b{
-      display: inline-block;
-      background-color: aquamarine;
-      padding: 0 15px;
-      border-radius: 5px;
+      width: 310px;
+      overflow: hidden;
+      border-radius: 5%;
+      box-shadow: 1px 1px 10px rgba(0,0,0,0.1);
+      margin-bottom: 35px;
+      margin-right: 20px;
+      cursor: pointer;
+      background-color: rgb(215, 240, 249);
+      }
+    .card .card-text {
+      padding: 0 20px
     }
 </style>

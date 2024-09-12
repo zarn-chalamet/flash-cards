@@ -95,22 +95,34 @@ export default {
     padding: 5px;
     border: none;
     background-color: transparent;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid rgb(222, 224, 228);
   }
   button {
-    padding: 10px 15px;
-    margin: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #007BFF;
-    color: white;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
+    background-color: white;
+    margin-top: 10px;
+    margin-right: 5px;
+    color: black;
+    border: none; 
+    border-radius: 50px; 
+    padding: 15px 30px; 
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold; 
+    letter-spacing: 1px; 
+    cursor: pointer; 
+    transition: all 0.3s ease; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   }
 
   button:hover {
-    background-color: #0056b3;
-    transform: scale(1.02);
+    background-color: #79bbea;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   }
+
+  button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
 </style>
