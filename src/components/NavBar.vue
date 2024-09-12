@@ -51,6 +51,7 @@ export default {
         cursor: pointer;
     }
     .b-nav.active {
-        color: #333;
+        color: #0a0a0a;
+        font-weight: bold;
     }
 </style>

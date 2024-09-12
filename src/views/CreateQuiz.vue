@@ -155,6 +155,10 @@ h3 {
   text-transform: uppercase;
 }
 
+h2{
+  text-transform: uppercase;
+}
+
 .radio-label {
   margin-left: 10px;
 }
