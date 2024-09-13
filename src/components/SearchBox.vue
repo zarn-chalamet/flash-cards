@@ -33,7 +33,6 @@ export default {
   justify-content: left;
   width: 100%;
   margin: 20px 0;
-  margin-left: 17px;
 }
 
 .search-input {

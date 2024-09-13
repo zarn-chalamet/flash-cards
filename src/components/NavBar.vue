@@ -33,7 +33,7 @@ export default {
     .nav-bar{
         display: flex;
         justify-content: left;
-        margin: 0 20px;
+        /* margin: 0 20px; */
         margin-top: 30px;
         
     }

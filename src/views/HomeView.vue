@@ -100,6 +100,6 @@ export default {
     display: flex;
     flex-wrap: wrap;
     margin-top: 40px;
-    margin: 0px 20px;
+    /* margin: 0px 20px; */
   }
 </style>
