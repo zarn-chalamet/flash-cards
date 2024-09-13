@@ -5,29 +5,46 @@
         <router-link :to="{name: 'home', params:{bol: true}}">FLASH</router-link>
       </div>
       <div class="nav-actions">
-        <router-link to="" @click="toggleModal" class="create-button">CREATE</router-link>
+        <router-link to="" @click="toggleModal" class="create-button"><span class="material-symbols-outlined">
+add
+</span></router-link>
+        
+        <!-- Circle Avatar -->
+        <div class="avatar" @click="toggleAvatarModal">
+          <img src="https://cdn-icons-png.flaticon.com/512/168/168732.png" alt="Avatar" class="avatar-img" />
+        </div>
       </div>
 
-      <!-- Modal for Phone Users (Bottom Modal) -->
+      <!-- Modal for Phone Users (CREATE) -->
       <div v-if="showModal && isPhone" class="modal-backdrop" @click="showModal = false">
         <div class="modal-content-phone" @click.stop>
-          <!-- <h3>Select a Page</h3> -->
           <button class="modal-btn" @click="goToPage('create')">Create Flash</button>
           <button class="modal-btn" @click="goToPage('create-quiz')">Create Quiz</button>
         </div>
       </div>
 
-      <!-- Modal for Web Users (Small Modal Below Button) -->
+      <!-- Modal for Phone Users (AVATAR) -->
+      <div v-if="showAvatarModal && isPhone" class="modal-backdrop" @click="showAvatarModal = false">
+        <div class="modal-content-phone" @click.stop>
+          <button class="modal-btn" @click="goToPage('profile')">View Profile</button>
+          <button class="modal-btn" @click="goToPage('settings')">Settings</button>
+        </div>
+      </div>
+
+      <!-- Modal for Web Users (CREATE) -->
       <div v-if="showModal && !isPhone" class="modal-content-web" @click.stop>
-        <!-- <h3>Select a Page</h3> -->
         <button class="modal-btn" @click="goToPage('create')">Create Flash</button>
         <button class="modal-btn" @click="goToPage('create-quiz')">Create Quiz</button>
+      </div>
+
+      <!-- Modal for Web Users (AVATAR) -->
+      <div v-if="showAvatarModal && !isPhone" class="modal-content-web" @click.stop>
+        <button class="modal-btn" @click="goToPage('profile')">View Profile</button>
+        <button class="modal-btn" @click="goToPage('settings')">Settings</button>
       </div>
     </nav>
   </header>
 </template>
-
-
 
 <script>
 import { ref, onMounted } from 'vue';
@@ -37,16 +54,33 @@ export default {
   setup() {
     let router = useRouter();
     let showModal = ref(false);
+    let showAvatarModal = ref(false); // State for avatar modal
     let isPhone = ref(false);
+    let isFlashWorking = ref(false);
+    let isAvatarWorking = ref(false);
 
     const toggleModal = (event) => {
       event.preventDefault();
-      showModal.value = !showModal.value;
+      
+      if(!isAvatarWorking.value){
+        showModal.value = ! showModal.value;
+        isFlashWorking.value = !isFlashWorking.value;
+      }
+    };
+
+    const toggleAvatarModal = (event) => {
+      event.preventDefault();
+      
+      if(!isFlashWorking.value){
+        showAvatarModal.value = !showAvatarModal.value;
+        isAvatarWorking.value = !isAvatarWorking.value;
+      }
     };
 
     const goToPage = (page) => {
       router.push({ name: page });
       showModal.value = false;
+      showAvatarModal.value = false; // Close avatar modal when navigating
     };
 
     const checkDevice = () => {
@@ -58,11 +92,10 @@ export default {
       window.addEventListener('resize', checkDevice);
     });
 
-    return { showModal, goToPage, isPhone, toggleModal };
+    return { showModal, goToPage, isPhone, toggleModal, toggleAvatarModal, showAvatarModal };
   },
 };
 </script>
-
 
 
 <style scoped>
@@ -84,7 +117,12 @@ nav {
   text-decoration: none;
 }
 
-.nav-actions .create-button {
+.nav-actions {
+  display: flex;
+  align-items: center;
+}
+
+.create-button {
   background-color: white;
   color: #45abc4;
   padding: 0.5rem 1rem;
@@ -93,11 +131,27 @@ nav {
   text-transform: uppercase;
   cursor: pointer;
   text-decoration: none;
+  margin-right: 10px;
 }
 
-.nav-actions .create-button:hover {
+.create-button:hover {
   background-color: #f8f9fa;
   color: #0056b3;
+}
+
+/* Circle Avatar */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Modal Backdrop for Phone */
@@ -123,11 +177,6 @@ nav {
   transition: transform 0.3s ease-in-out;
 }
 
-.modal-content-phone h3 {
-  margin-bottom: 1.5rem;
-  font-size: 1.25rem;
-}
-
 .modal-btn {
   background-color: #0d6efd;
   color: white;
@@ -146,15 +195,10 @@ nav {
   background-color: #0056b3;
 }
 
-.modal-btn:active {
-  transform: scale(0.98);
-}
-
-
 .modal-content-web {
   position: absolute;
   top: 100px;
-  right: 15px; 
+  right: 15px;
   background-color: white;
   padding: 1rem;
   border-radius: 10px;
@@ -162,29 +206,6 @@ nav {
   text-align: center;
   z-index: 1001;
   width: 180px;
-}
-
-.modal-content-web h3 {
-  font-size: 1rem;
-  margin-bottom: 1rem;
-}
-
-.modal-content-web .modal-btn, .modal-content-phone .modal-btn {
-  background-color: #45abc4;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  width: 100%;
-  margin: 0.5rem 0;
-  cursor: pointer;
-}
-
-.modal-content-web .modal-btn:hover, .modal-content-phone .modal-btn:hover {
-  background-color: #0056b3;
-}
-
-.modal-content-web .modal-btn:active, .modal-content-phone .modal-btn:active {
-  transform: scale(0.98);
 }
 
 @media screen and (max-width: 768px) {

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <span class="choose-btn" @click="selectFile">Choose</span>
+    <span class="choose-btn" @click="selectFile"><span class="material-symbols-outlined">
+add_photo_alternate
+</span></span>
     <input 
       name="file" 
       type="file" 
@@ -58,62 +60,72 @@ export default {
 </script>
 
 <style scoped>
-.choose-btn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
+  .choose-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 20px 5px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+
+  .choose-btn:hover {
+    background-color: #45a049;
+  }
+
+  .image-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .image-box {
+    width: 120px;
+    height: 120px;
+    margin: 10px;
+    position: relative;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 20px;
+    transition: background-color 0.3s;
+  }
+
+  .remove-btn:hover {
+    background-color: rgba(255, 0, 0, 1);
+  }
+
+  .material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24,
 }
 
-.choose-btn:hover {
-  background-color: #45a049;
-}
-
-.image-container {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 20px;
-}
-
-.image-box {
-  width: 120px;
-  height: 120px;
-  margin: 10px;
-  position: relative;
-  border: 2px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.preview-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.remove-btn {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: rgba(255, 0, 0, 0.7);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  text-align: center;
-  font-size: 16px;
-  cursor: pointer;
-  line-height: 20px;
-  transition: background-color 0.3s;
-}
-
-.remove-btn:hover {
-  background-color: rgba(255, 0, 0, 1);
-}
+  
 </style>

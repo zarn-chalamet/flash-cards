@@ -4,9 +4,18 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import "./firebase/init";
 import router from "./router";
+import { getAuth } from "firebase/auth";
 
-const app = createApp(App);
+const auth = getAuth();
 
-app.use(router);
+let app;
 
-app.mount("#app");
+auth.onAuthStateChanged(() => {
+  if (!app) {
+    app = createApp(App);
+
+    app.use(router);
+
+    app.mount("#app");
+  }
+});
