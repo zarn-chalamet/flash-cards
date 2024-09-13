@@ -53,7 +53,7 @@ export default {
         cards: cards.value
       };
       await addDocument(newFlashCard);
-      router.push("/");
+      router.push({ name: 'home', params: { bol: true } });
     };
 
     return { cards, title, description, error, addSingleCard, addCard, submitForm };

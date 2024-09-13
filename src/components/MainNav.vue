@@ -2,7 +2,7 @@
   <header>
     <nav @click="closeModal">
       <div class="logo">
-        <router-link to="/">FLASH</router-link>
+        <router-link :to="{name: 'home', params:{bol: true}}">FLASH</router-link>
       </div>
       <div class="nav-actions">
         <router-link to="" @click="toggleModal" class="create-button">CREATE</router-link>

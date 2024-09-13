@@ -105,7 +105,7 @@ export default {
       console.log(downloadUrl);
       quizData.value.img = downloadUrl;
       await addDocument(quizData.value);
-      router.push("/");
+      router.push({ name: 'home', params: { bol: false } });
     };
 
     let selectedImages = (selectedImagess) => {

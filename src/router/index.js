@@ -4,14 +4,21 @@ import CreateCard from "@/views/CreateCard.vue";
 import SingleView from "@/views/SingleView.vue";
 import CreateQuiz from "@/views/CreateQuiz.vue";
 import SingleQuizView from "@/views/SingleQuizView.vue";
+import WelcomView from "@/views/WelcomView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
+      name: "welcome",
+      component: WelcomView,
+    },
+    {
+      path: "/home/:bol",
       name: "home",
       component: HomeView,
+      props: true,
     },
     {
       path: "/create",
