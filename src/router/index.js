@@ -12,8 +12,17 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "welcome",
+      name: "Welcome",
       component: WelcomView,
+      beforeEnter(to, from, next) {
+        const auth = getAuth();
+        let user = auth.currentUser;
+        if (!user) {
+          next();
+        } else {
+          next({ name: "Home" });
+        }
+      },
     },
     {
       path: "/home/:bol",
@@ -26,7 +35,7 @@ const router = createRouter({
         if (user) {
           next();
         } else {
-          next({ name: welcome });
+          next({ name: "Welcome" });
         }
       },
     },

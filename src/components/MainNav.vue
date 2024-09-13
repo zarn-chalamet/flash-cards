@@ -27,7 +27,7 @@ add
       <div v-if="showAvatarModal && isPhone" class="modal-backdrop" @click="showAvatarModal = false">
         <div class="modal-content-phone" @click.stop>
           <button class="modal-btn" @click="goToPage('profile')">View Profile</button>
-          <button class="modal-btn" @click="goToPage('settings')">Settings</button>
+          <button class="modal-btn" @click="logOut">Logout</button>
         </div>
       </div>
 
@@ -40,13 +40,14 @@ add
       <!-- Modal for Web Users (AVATAR) -->
       <div v-if="showAvatarModal && !isPhone" class="modal-content-web" @click.stop>
         <button class="modal-btn" @click="goToPage('profile')">View Profile</button>
-        <button class="modal-btn" @click="goToPage('settings')">Settings</button>
+        <button class="modal-btn" @click="logOut">Logout</button>
       </div>
     </nav>
   </header>
 </template>
 
 <script>
+import { getAuth } from 'firebase/auth';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -58,6 +59,7 @@ export default {
     let isPhone = ref(false);
     let isFlashWorking = ref(false);
     let isAvatarWorking = ref(false);
+    const auth = getAuth();
 
     const toggleModal = (event) => {
       event.preventDefault();
@@ -87,12 +89,24 @@ export default {
       isPhone.value = window.innerWidth <= 768; // Detect phone size
     };
 
+    let logOut = async () => {
+      console.log('runned');
+      try{
+        console.log(auth.currentUser);
+        await auth.signOut();
+        console.log(auth.currentUser);
+      }
+      catch(err){
+        error.value = err.message;
+      }
+    }
+
     onMounted(() => {
       checkDevice();
       window.addEventListener('resize', checkDevice);
     });
 
-    return { showModal, goToPage, isPhone, toggleModal, toggleAvatarModal, showAvatarModal };
+    return { showModal, goToPage, isPhone, toggleModal, toggleAvatarModal, showAvatarModal,logOut};
   },
 };
 </script>

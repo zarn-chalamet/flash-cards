@@ -26,9 +26,11 @@
 import SearchBox from '../components/SearchBox.vue';
 import SingleQuizGrid from '../components/SingleQuizGrid.vue';
 import NavBar from '../components/NavBar.vue';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import SingleCard from '../components/SingleCard.vue';
 import { query, getFirestore, collection, onSnapshot } from 'firebase/firestore';
+import getUser from '@/composables/GetUser';
+import { useRouter } from 'vue-router';
 
 export default {
   components: {
@@ -45,6 +47,13 @@ export default {
     let isShowFlash = ref(props.bol);
     let filteredFlashs = ref([]);
     let filteredQuizzs = ref([]);
+
+    let {user} = getUser(); 
+    const router = useRouter();
+   
+    watch(user,()=>{
+      router.push("/");
+    })
 
     const receiveSource = (filteredSources) => {
       if (isShowFlash.value) {
@@ -96,6 +105,7 @@ export default {
       receiveSource,
       filteredFlashs,
       filteredQuizzs,
+      user
     };
   },
 };
