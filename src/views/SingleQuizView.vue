@@ -1,6 +1,7 @@
 <template>
   <div v-if="showResult" class="result-container">
     <h3>Total Mark: {{ total_mark }}</h3>
+    <UploadFile></UploadFile>
   </div>
   <div v-else>
     <div v-if="quiz">
@@ -26,13 +27,12 @@
       <button @click="goForward" class="navigation-button">
         Forward
       </button>
-      
-      <h3 v-if="selectedOption" class="selected-option">Selected Option: {{ selectedOption }}</h3>
     </div>
   </div>
 </template>
 
 <script>
+import UploadFile from '../components/UploadFile.vue'
 import OptionsBody from '../components/OptionsBody.vue';
 import QuizHeader from '../components/QuizHeader.vue';
 import { onMounted, ref } from 'vue';
@@ -40,6 +40,7 @@ import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
 
 export default {
   components: {
+    UploadFile,
     OptionsBody,
     QuizHeader,
   },

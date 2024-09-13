@@ -4,13 +4,15 @@
     <form @submit.prevent="submitForm">
       <div class="form-group">
         <label>Quiz Title</label>
-        <input type="text" v-model="quizData.name" required />
+        <input type="text" v-model="quizData.title" required />
       </div>
 
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label>Image Link</label>
         <input type="text" v-model="quizData.img" required />
-      </div>
+      </div> -->
+
+      <UploadFile @selectedImages="selectedImages"></UploadFile>
 
       <div v-for="(question, qIndex) in quizData.questions" :key="qIndex" class="question-group">
         <h3>Question {{ qIndex + 1 }}</h3>
@@ -36,18 +38,28 @@
       <button type="button" class="add-button" @click="addQuestion">Add Question</button>
       <button type="submit" class="submit-button">Submit Quiz</button>
     </form>
+    <div v-if="images">
+      <div v-for="(image, index) in images" :key="index">
+        <img :src="image.url"/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import storeDataToDatabase from '@/composables/StoreDataToDatabse';
+import UploadFile from '../components/UploadFile.vue'
 import useCollection from '@/composables/useCollection';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 export default {
+  components: { UploadFile },
   setup() {
     let { error, addDocument } = useCollection("quizzs");
     let router = useRouter();
+    let images = ref(null);
+    let {uploadFile,err} = storeDataToDatabase();
     let quizData = ref({
       id: 1,
       img: '',
@@ -89,11 +101,18 @@ export default {
     };
 
     let submitForm = async () => {
+      let downloadUrl = await uploadFile(images.value[0].realFile);
+      console.log(downloadUrl);
+      quizData.value.img = downloadUrl;
       await addDocument(quizData.value);
       router.push("/");
     };
 
-    return { quizData, addQuestion, addOption, setCorrectOption, submitForm };
+    let selectedImages = (selectedImagess) => {
+      images.value = selectedImagess;
+    }
+
+    return { quizData, addQuestion, addOption, setCorrectOption, submitForm, selectedImages,images};
   },
 };
 </script>
