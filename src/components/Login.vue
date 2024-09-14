@@ -7,11 +7,16 @@
         <button>
             Login
         </button>
+        <div class="avatar" @click="signInWithGoogle">
+          <img src="../assets/google.jpg" alt="Avatar" class="avatar-img" />
+        </div>
+      
     </form>
 </template>
 
 <script>
 import loginAcc from '@/composables/LoginAcc';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { ref } from 'vue';
 
 export default {
@@ -19,6 +24,7 @@ export default {
         let email = ref("");
         let password = ref("");
         let {error, logIn} = loginAcc();
+        const auth = getAuth();
 
         let loginFun = async() =>{
             let res = await logIn(email.value,password.value);
@@ -26,11 +32,36 @@ export default {
                 context.emit("enterChatroom");
             }
         };
-        return {loginFun,email,password,error}
+
+        let signInWithGoogle = async () => {
+            const provider = new GoogleAuthProvider();
+            try{
+                const result = await signInWithPopup(auth,provider);
+                console.log(result.value);
+                console.log(auth.currentUser);
+            }catch(err){
+                console.log(err);
+            }
+        }
+        return {loginFun,email,password,error,signInWithGoogle}
     }
 }
 </script>
 
-<style>
+<style scoped>
+/* Circle Avatar */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  margin: 10px auto;
+}
 
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 </style>

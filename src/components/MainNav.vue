@@ -11,7 +11,12 @@ add
         
         <!-- Circle Avatar -->
         <div class="avatar" @click="toggleAvatarModal">
-          <img src="https://cdn-icons-png.flaticon.com/512/168/168732.png" alt="Avatar" class="avatar-img" />
+          <div v-if="user.photoURL">
+            <img :src="user.photoURL" alt="Avatar" class="avatar-img" />
+          </div>
+          <div v-else>
+            <img src="https://cdn-icons-png.flaticon.com/512/168/168732.png" alt="Avatar" class="avatar-img" />
+          </div>
         </div>
       </div>
 
@@ -26,7 +31,12 @@ add
       <!-- Modal for Phone Users (AVATAR) -->
       <div v-if="showAvatarModal && isPhone" class="modal-backdrop" @click="showAvatarModal = false">
         <div class="modal-content-phone" @click.stop>
-          <button class="modal-btn" @click="goToPage('profile')">View Profile</button>
+          <div class="info">
+            <span>{{ user.displayName }}</span>
+            <br>
+            <span>{{ user.email }}</span>
+          </div>
+          <!-- <button class="modal-btn" @click="goToPage('profile')">View Profile</button> -->
           <button class="modal-btn" @click="logOut">Logout</button>
         </div>
       </div>
@@ -39,7 +49,12 @@ add
 
       <!-- Modal for Web Users (AVATAR) -->
       <div v-if="showAvatarModal && !isPhone" class="modal-content-web" @click.stop>
-        <button class="modal-btn" @click="goToPage('profile')">View Profile</button>
+        <!-- <button class="modal-btn" @click="goToPage('profile')">View Profile</button> -->
+        <div class="info">
+            <span>{{ user.displayName }}</span>
+            <br>
+            <span>{{ user.email }}</span>
+          </div>
         <button class="modal-btn" @click="logOut">Logout</button>
       </div>
     </nav>
@@ -47,6 +62,7 @@ add
 </template>
 
 <script>
+import getUser from '@/composables/GetUser';
 import { getAuth } from 'firebase/auth';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
@@ -59,6 +75,7 @@ export default {
     let isPhone = ref(false);
     let isFlashWorking = ref(false);
     let isAvatarWorking = ref(false);
+    let { user } = getUser();
     const auth = getAuth();
 
     const toggleModal = (event) => {
@@ -102,11 +119,13 @@ export default {
     }
 
     onMounted(() => {
+      console.log("URL");
+      console.log(user.value.photoURL);
       checkDevice();
       window.addEventListener('resize', checkDevice);
     });
 
-    return { showModal, goToPage, isPhone, toggleModal, toggleAvatarModal, showAvatarModal,logOut};
+    return { showModal, goToPage, isPhone, toggleModal, toggleAvatarModal, showAvatarModal,logOut, user};
   },
 };
 </script>
@@ -232,5 +251,9 @@ nav {
   .modal-backdrop {
     display: none;
   }
+}
+
+.info span{
+  color: black;
 }
 </style>

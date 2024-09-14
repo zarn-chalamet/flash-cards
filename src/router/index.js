@@ -20,7 +20,7 @@ const router = createRouter({
         if (!user) {
           next();
         } else {
-          next({ name: "Home" });
+          next({ name: "home", params: { bol: true } });
         }
       },
     },
