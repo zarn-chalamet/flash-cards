@@ -1,5 +1,6 @@
 <template>
   <NavBar @goToPage="goToPage" :isShowFlash="bol"></NavBar>
+  
   <div v-if="bol=== 'true'">
     <SearchBox :source="flashs" @emitSource="receiveSource"></SearchBox>
     <div class="options-container">
@@ -20,6 +21,7 @@
       </div>
     </div>
   </div>
+  
 </template>
 
 <script>
@@ -53,10 +55,15 @@ export default {
    
     watch(user,()=>{
       router.push("/");
-    })
+    });
+
+    watch(() => props.bol, (newVal) => {
+      isShowFlash.value = newVal;
+    });
 
     const receiveSource = (filteredSources) => {
-      if (isShowFlash.value) {
+      console.log("is show flash value"+ isShowFlash.value)
+      if (isShowFlash.value === 'true') {
         filteredFlashs.value = filteredSources;
       } else {
         filteredQuizzs.value = filteredSources;

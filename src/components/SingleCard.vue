@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     
-    <div class="card-text">
+    <div class="card-text" v-if="flash">
       <h3>{{flash.title}}</h3>
       <h4>{{flash.cards.length}} terms</h4>
     </div>

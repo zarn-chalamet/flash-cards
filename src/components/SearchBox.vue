@@ -18,6 +18,7 @@ export default {
         (item) => 
           item.title.toLowerCase().includes(search.value.toLowerCase())
       );
+      console.log(filterdSource.value);
       context.emit("emitSource",filterdSource.value);
     })
     return {search,filterdSource};

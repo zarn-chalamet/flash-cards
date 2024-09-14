@@ -41,18 +41,28 @@ export default {
     max-width: 900px;
     border-radius: 10px;
     margin: 80px auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   /* form styles */
   .welcome form {
     width: 300px;
     margin: 20px auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
   /* .welcome label {
     display: block;
     margin: 20px 0 10px;
   } */
   .welcome input {
-    width: 100%;
+    width: 70%;
     padding: 10px;
     border-radius: 20px;
     border: 1px solid #eee;
