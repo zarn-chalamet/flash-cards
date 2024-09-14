@@ -37,8 +37,9 @@ export default {
             const provider = new GoogleAuthProvider();
             try{
                 const result = await signInWithPopup(auth,provider);
-                console.log(result.value);
-                console.log(auth.currentUser);
+                if(result.user){
+                    context.emit("enterChatroom");
+                }
             }catch(err){
                 console.log(err);
             }
