@@ -1,4 +1,5 @@
 <template>
+  <router-link to="/generate">Generate</router-link>
   <NavBar @goToPage="goToPage" :isShowFlash="bol"></NavBar>
   
   <div v-if="bol=== 'true'">
