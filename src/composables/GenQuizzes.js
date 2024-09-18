@@ -15,6 +15,7 @@ let genQuizzes = () => {
     const chunks = chunkText(inputText);
 
     let allGeneratedQuizzes = [];
+    let contextss = [];
 
     for (let chunk of chunks) {
       try {
@@ -39,6 +40,8 @@ let genQuizzes = () => {
 
           console.log("Generated Quizzes:", generatedQuizzes);
           allGeneratedQuizzes.push(...generatedQuizzes);
+
+          contextss.push(chunk);
         } else {
           console.error("Unexpected response format:", response.data);
         }
@@ -55,7 +58,7 @@ let genQuizzes = () => {
       return null;
     }
 
-    return allGeneratedQuizzes;
+    return { allGeneratedQuizzes, contextss };
   };
 
   // Function to get answers for generated questions
@@ -88,12 +91,15 @@ let genQuizzes = () => {
 
           console.log("QA Response:", response.data); // Log the response for debugging
 
-          // Check if the response is in the expected format
+          // Extract the answer
           if (response.data) {
-            const answer = response.data.answer;
-            allAnswers.push({ question, answer });
+            const answer = response.data.answer.trim();
+
+            // Optional: Additional filtering based on answer type
+            if (answer) {
+              allAnswers.push({ question, answer });
+            }
           } else {
-            console.log(response.data.answer);
             console.error("Unexpected QA response format:", response.data);
           }
           break; // Exit the retry loop if successful
@@ -104,13 +110,57 @@ let genQuizzes = () => {
           );
           attempts++;
           if (attempts < maxAttempts) {
-            await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait 2 seconds before retrying
+            await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait before retrying
           }
         }
       }
     }
 
     return allAnswers;
+  };
+
+  const generateDistractors = async (context, question, correctAnswer) => {
+    const apiUrl =
+      "https://api-inference.huggingface.co/models/voidful/bart-distractor-generation-both";
+    // Replace with your Hugging Face API key
+
+    // Format the input as context </s> question </s> answer
+    const inputText = `${context} </s> ${question} </s> ${correctAnswer}`;
+
+    let attempts = 0;
+    const maxAttempts = 3; // Maximum number of retry attempts
+
+    while (attempts < maxAttempts) {
+      try {
+        const response = await axios.post(
+          apiUrl,
+          {
+            inputs: inputText,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${apiKey}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // Extract the generated distractor(s) from the response
+        const generatedDistractors = response.data.map(
+          (item) => item.generated_text
+        );
+
+        console.log("Generated Distractors:", generatedDistractors);
+        return generatedDistractors;
+      } catch (error) {
+        console.error("Error fetching distractors:", error);
+        attempts++;
+        if (attempts < maxAttempts) {
+          await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait before retrying
+        }
+      }
+      return [];
+    }
   };
 
   // Utility function to split text into chunks
@@ -125,7 +175,11 @@ let genQuizzes = () => {
     return chunks;
   };
 
-  return { generateQuizFromText, getAnswersForQuestions };
+  return {
+    generateQuizFromText,
+    getAnswersForQuestions,
+    generateDistractors,
+  };
 };
 
 export default genQuizzes;
