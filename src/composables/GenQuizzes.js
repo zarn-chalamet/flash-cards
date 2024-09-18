@@ -1,7 +1,8 @@
+import { HUGGING_FACE_API_KEY } from "@/config";
 import axios from "axios";
 
 let genQuizzes = () => {
-  const apiKey = "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"; // Replace with your Hugging Face API key
+  const apiKey = HUGGING_FACE_API_KEY; // Replace with your Hugging Face API key
 
   // Function to generate quizzes (questions) from text
   const generateQuizFromText = async (inputText) => {
