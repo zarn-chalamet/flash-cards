@@ -1,8 +1,17 @@
 <template>
     <header>
       <div class="nav-bar">
-        <button class="b-nav" @click="goToFlash" :class="{ active: isShowFlash === 'true' }">Flash Card</button>
-        <button class="b-nav" @click="goToQuiz" :class="{ active: isShowFlash === 'false'}">Quiz</button>
+        <div>
+          <button class="b-nav" @click="goToFlash" :class="{ active: isShowFlash === 'true' }">Flash Card</button>
+          <button class="b-nav" @click="goToQuiz" :class="{ active: isShowFlash === 'false'}">Quiz</button>
+        </div>
+        <div>
+          <router-link to="/generate">
+            <button>
+              create by AI
+            </button>
+          </router-link>
+        </div>
       </div>
     </header>
   </template>
@@ -30,7 +39,7 @@ import { useRouter } from 'vue-router';
   <style>
   .nav-bar {
     display: flex;
-    justify-content: left;
+    justify-content: space-between;
     margin-top: 30px;
   }
   .b-nav {

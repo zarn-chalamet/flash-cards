@@ -110,7 +110,7 @@ let genQuizzes = () => {
           );
           attempts++;
           if (attempts < maxAttempts) {
-            await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait before retrying
+            await new Promise((resolve) => setTimeout(resolve, 8000)); // Wait before retrying
           }
         }
       }

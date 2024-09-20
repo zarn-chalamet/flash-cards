@@ -1,6 +1,6 @@
 <template>
   <div v-if="showResult" class="result-container">
-    <h3>Total Mark: {{ total_mark }}</h3>
+    <QuizResults :mark="total_mark" :quiz="quiz"></QuizResults>
   </div>
   <div v-else>
     <div v-if="quiz">
@@ -32,6 +32,7 @@
 
 <script>
 
+import QuizResults from '../components/QuizResults.vue'
 import OptionsBody from '../components/OptionsBody.vue';
 import QuizHeader from '../components/QuizHeader.vue';
 import { onMounted, ref } from 'vue';
@@ -39,6 +40,7 @@ import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
 
 export default {
   components: {
+    QuizResults,
     OptionsBody,
     QuizHeader,
   },
