@@ -3,14 +3,27 @@
       <img :src="quiz.img" alt="">
       <div class="card-text">
             <h2>{{ quiz.title }}</h2>
-            <div class="length">{{ quiz.questions.length }} questions</div>
-        </div>
+            <div class="edit-box">
+              <div class="length">
+                {{ quiz.questions.length }} questions <br>
+                <p>{{ quiz.owner_email }}</p>
+              </div>
+              <div class="edit-icon" v-if="edit">
+                <router-link :to="{name:'Quiz-Edit',params:{id:quiz.id}}">
+                  <span class="material-symbols-outlined">
+                    edit
+                  </span>
+                </router-link>
+              </div>
+            </div>
+            
+      </div>
     </div>
   </template>
   
   <script>
   export default {
-    props:['quiz']
+    props:['quiz','edit']
   }
   </script>
   
@@ -37,10 +50,17 @@
 
     .card .card-text h2 {
       font-weight: bold;
-      padding-left: 10px;
+      padding-left: 20px;
     }
     .card .length{
       padding-bottom: 15px;
-      padding-left: 10px;
+      padding-left: 20px;
+    }
+    .edit-box{
+      display: flex;
+      justify-content: space-between;
+    }
+    .edit-icon{
+      margin-right: 20px;
     }
 </style>

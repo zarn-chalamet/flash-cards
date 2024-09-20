@@ -2,20 +2,24 @@
   <header>
     <nav @click="closeModal">
       <div class="logo">
-        <router-link :to="{name: 'home', params:{bol: true}}">FLASH</router-link>
+        <router-link :to="{ name: 'home', params: { bol: true } }">FLASH</router-link>
       </div>
       <div class="nav-actions">
-        <router-link to="" @click="toggleModal" class="create-button"><span class="material-symbols-outlined">
-add
-</span></router-link>
-        
+        <router-link to="" @click.prevent="toggleModal" class="create-button">
+          <span class="material-symbols-outlined">add</span>
+        </router-link>
+
         <!-- Circle Avatar -->
-        <div class="avatar" @click="toggleAvatarModal">
+        <div class="avatar" @click.prevent="toggleAvatarModal">
           <div v-if="user.photoURL">
             <img :src="user.photoURL" alt="Avatar" class="avatar-img" />
           </div>
           <div v-else>
-            <img src="https://cdn-icons-png.flaticon.com/512/168/168732.png" alt="Avatar" class="avatar-img" />
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/168/168732.png"
+              alt="Avatar"
+              class="avatar-img"
+            />
           </div>
         </div>
       </div>
@@ -33,10 +37,14 @@ add
         <div class="modal-content-phone" @click.stop>
           <div class="info">
             <span>{{ user.displayName }}</span>
-            <br>
+            <br />
             <span>{{ user.email }}</span>
           </div>
-          <!-- <button class="modal-btn" @click="goToPage('profile')">View Profile</button> -->
+          <router-link to="/edit-view" >
+            <button class="modal-btn" @click="showAvatarModal=false">
+              My Quizzes
+            </button>
+          </router-link>
           <button class="modal-btn" @click="logOut">Logout</button>
         </div>
       </div>
@@ -49,12 +57,16 @@ add
 
       <!-- Modal for Web Users (AVATAR) -->
       <div v-if="showAvatarModal && !isPhone" class="modal-content-web" @click.stop>
-        <!-- <button class="modal-btn" @click="goToPage('profile')">View Profile</button> -->
         <div class="info">
-            <span>{{ user.displayName }}</span>
-            <br>
-            <span>{{ user.email }}</span>
-          </div>
+          <span>{{ user.displayName }}</span>
+          <br />
+          <span>{{ user.email }}</span>
+        </div>
+        <router-link to="/edit-view">
+          <button class="modal-btn" @click="showAvatarModal=false">
+            My Quizzes
+          </button>
+        </router-link>
         <button class="modal-btn" @click="logOut">Logout</button>
       </div>
     </nav>
@@ -69,28 +81,28 @@ import { useRouter } from 'vue-router';
 
 export default {
   setup() {
-    let router = useRouter();
-    let showModal = ref(false);
-    let showAvatarModal = ref(false); // State for avatar modal
-    let isPhone = ref(false);
-    let isFlashWorking = ref(false);
-    let isAvatarWorking = ref(false);
-    let { user } = getUser();
+    const router = useRouter();
+    const showModal = ref(false);
+    const showAvatarModal = ref(false); // State for avatar modal
+    const isPhone = ref(false);
+    const isFlashWorking = ref(false);
+    const isAvatarWorking = ref(false);
+    const { user } = getUser();
     const auth = getAuth();
 
     const toggleModal = (event) => {
       event.preventDefault();
-      
-      if(!isAvatarWorking.value){
-        showModal.value = ! showModal.value;
+
+      if (!isAvatarWorking.value) {
+        showModal.value = !showModal.value;
         isFlashWorking.value = !isFlashWorking.value;
       }
     };
 
     const toggleAvatarModal = (event) => {
       event.preventDefault();
-      
-      if(!isFlashWorking.value){
+
+      if (!isFlashWorking.value) {
         showAvatarModal.value = !showAvatarModal.value;
         isAvatarWorking.value = !isAvatarWorking.value;
       }
@@ -106,30 +118,32 @@ export default {
       isPhone.value = window.innerWidth <= 768; // Detect phone size
     };
 
-    let logOut = async () => {
-      console.log('runned');
-      try{
-        console.log(auth.currentUser);
+    const logOut = async () => {
+      try {
         await auth.signOut();
-        console.log(auth.currentUser);
+      } catch (err) {
+        console.error(err.message);
       }
-      catch(err){
-        error.value = err.message;
-      }
-    }
+    };
 
     onMounted(() => {
-      console.log("URL");
-      console.log(user.value.photoURL);
       checkDevice();
       window.addEventListener('resize', checkDevice);
     });
 
-    return { showModal, goToPage, isPhone, toggleModal, toggleAvatarModal, showAvatarModal,logOut, user};
+    return {
+      showModal,
+      showAvatarModal,
+      goToPage,
+      isPhone,
+      toggleModal,
+      toggleAvatarModal,
+      logOut,
+      user,
+    };
   },
 };
 </script>
-
 
 <style scoped>
 /* Navigation Bar */
@@ -253,7 +267,7 @@ nav {
   }
 }
 
-.info span{
+.info span {
   color: black;
 }
 </style>

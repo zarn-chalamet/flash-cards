@@ -7,6 +7,8 @@ import SingleQuizView from "@/views/SingleQuizView.vue";
 import WelcomView from "@/views/WelcomView.vue";
 import { getAuth } from "firebase/auth";
 import AIGenerate from "@/views/AIGenerate.vue";
+import EditView from "@/views/EditView.vue";
+import SingleQuizEdit from "@/views/SingleQuizEdit.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -66,6 +68,17 @@ const router = createRouter({
       path: "/generate",
       name: "Ai-Generate",
       component: AIGenerate,
+    },
+    {
+      path: "/edit-view",
+      name: "Edit-View",
+      component: EditView,
+    },
+    {
+      path: "/edit-quizzes/:id",
+      name: "Quiz-Edit",
+      component: SingleQuizEdit,
+      props: true,
     },
   ],
 });

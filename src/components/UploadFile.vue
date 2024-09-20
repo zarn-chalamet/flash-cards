@@ -17,6 +17,11 @@ add_photo_alternate
         <span class="remove-btn" @click="removeImage(index)">×</span>
       </div>
     </div>
+    <div v-if="selectedImages.length === 0 && current" class="image-container">
+      <div class="image-box">
+        <img :src="current" class="preview-img" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,6 +29,7 @@ add_photo_alternate
 import { ref } from 'vue';
 
 export default {
+  props: ['current'],
   setup(props, context) {
     const selectedImages = ref([]);
     const fileInput = ref(null);
