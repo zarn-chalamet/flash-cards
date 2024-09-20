@@ -17,6 +17,7 @@ import extractText from '@/composables/ExtractText';
 import * as pdfjsLib from "pdfjs-dist";
 import genQuizzes from '@/composables/GenQuizzes';
 import axios from 'axios';
+import useCollection from '@/composables/useCollection';
 // import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdfjs/pdf.worker.min.mjs';
@@ -39,9 +40,10 @@ export default {
         let generatedQuesAndAns = ref([]);
         let quizOrgData = ref({
                             id: 1,
-                            img: '',
-                            title: '',
+                            img: 'https://cdn.lifehack.org/wp-content/uploads/2020/09/best-monitor.jpeg',
+                            title: 'Computer',
                             questions: [ ],});
+        let { error, addDocument } = useCollection("quizzs");
 
         let selectedFiles = (selectedFiles) => {
             files.value = selectedFiles;
@@ -81,13 +83,13 @@ export default {
                     console.log("Distractor 2: ", distractor2);
                     console.log("Distractor 3: ", distractor3);
 
-                    generatedQuesAndAns.value.push({question: question,answer: answer,distractors:[distractor1,distractor2,distractor3]});
+                    generatedQuesAndAns.value.push({question: question,answer: answer,distractors:[distractor1.toString(),distractor2.toString(),distractor3.toString()]});
 
                   }
 
                   creatQuizAutomation();
-                  console.log(quizOrgData.value)
-
+                  await addDocument(quizOrgData.value);
+                  console.log(quizOrgData.value);
                 }
                 console.log(generatedQuesAndAns.value[0])
                 console.log(quizOrgData.value.questions[0].options[0])
@@ -101,11 +103,18 @@ export default {
           }
         }
 
+        let shuffleArray = (array) => {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
+          return array;
+        };
+
         let creatQuizAutomation = () => {
-          quizOrgData.value.questions = generatedQuesAndAns.value.map((item, index) => ({
-            id: index + 1,
-            text: item.question,
-            options: [
+          quizOrgData.value.questions = generatedQuesAndAns.value.map((item, index) => {
+            // Create options
+            let options = [
               { id: 1, label: 'A', text: item.answer, isCorrect: true },
               ...item.distractors.map((distractor, idx) => ({
                 id: idx + 2, // IDs for distractors
@@ -113,10 +122,24 @@ export default {
                 text: distractor,
                 isCorrect: false,
               })),
-            ],
-          }));
+            ];
 
-        }
+            // Shuffle the options array
+            options = shuffleArray(options);
+
+            // Assign new labels after shuffle
+            options.forEach((option, idx) => {
+              option.label = String.fromCharCode(65 + idx); // A, B, C, D, etc.
+              option.id = idx + 1;
+            });
+
+            return {
+              id: index + 1,
+              text: item.question,
+              options: options,
+            };
+          });
+        };
 
         
         return {files, selectedFiles,submitFile,extractedText,quizes,questionsAndAnswers};
